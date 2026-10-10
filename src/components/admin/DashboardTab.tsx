@@ -2,31 +2,20 @@ import { useApp } from '../../context/AppContext';
 import { CATEGORIES, getCategoryName, getSubcategoryName } from '../../data/categories';
 import { CategoryIcon } from '../CategoryIcon';
 import {
-  TrendingUp, DollarSign, ShoppingBag, ClipboardCheck,
-  AlertTriangle, Package, ArrowUpRight, Calendar, Award,
+  DollarSign, ShoppingBag, AlertTriangle, Package, Calendar, Award,
 } from 'lucide-react';
 import { useMemo } from 'react';
 
 export function DashboardTab() {
-  const { sales, products, schoolLists } = useApp();
+  const { sales, products } = useApp();
 
   const today = new Date().toISOString().split('T')[0];
-  const currentMonth = new Date().toISOString().slice(0, 7);
-
   const todaySales = useMemo(() =>
     sales.filter((s) => s.createdAt.startsWith(today)),
     [sales, today]
   );
 
-  const monthSales = useMemo(() =>
-    sales.filter((s) => s.createdAt.startsWith(currentMonth)),
-    [sales, currentMonth]
-  );
-
   const todayTotal = todaySales.reduce((sum, s) => sum + s.total, 0);
-  const monthTotal = monthSales.reduce((sum, s) => sum + s.total, 0);
-  const completedLists = schoolLists.filter((l) => l.status === 'completada').length;
-
   const lowStockProducts = products.filter((p) => p.active && p.stock <= p.minStock);
   const totalProducts = products.filter((p) => p.active).length;
   const totalStock = products.filter((p) => p.active).reduce((sum, p) => sum + p.stock, 0);
@@ -37,32 +26,27 @@ export function DashboardTab() {
       value: `S/ ${todayTotal.toFixed(2)}`,
       sub: `${todaySales.length} transacciones`,
       icon: DollarSign,
-      color: 'bg-primary-600',
-      bg: 'bg-primary-50',
+      color: 'text-sky-700',
+      bg: 'bg-sky-50',
+      accent: 'bg-sky-500',
     },
     {
-      label: 'Ventas del mes',
-      value: `S/ ${monthTotal.toFixed(2)}`,
-      sub: `${monthSales.length} transacciones`,
-      icon: TrendingUp,
-      color: 'bg-success-600',
-      bg: 'bg-success-50',
-    },
-    {
-      label: 'Listas atendidas',
-      value: completedLists.toString(),
-      sub: `${schoolLists.length - completedLists} pendientes`,
-      icon: ClipboardCheck,
-      color: 'bg-accent-600',
-      bg: 'bg-accent-50',
-    },
-    {
-      label: 'Productos activos',
-      value: totalProducts.toString(),
-      sub: `${totalStock} unidades en stock`,
+      label: 'Productos en stock',
+      value: totalStock.toLocaleString('es-PE'),
+      sub: `${totalProducts} productos activos`,
       icon: Package,
-      color: 'bg-secondary-600',
-      bg: 'bg-secondary-100',
+      color: 'text-primary-700',
+      bg: 'bg-blue-50',
+      accent: 'bg-primary-700',
+    },
+    {
+      label: 'Alertas de stock bajo',
+      value: lowStockProducts.length.toString(),
+      sub: lowStockProducts.length === 1 ? 'producto necesita atención' : 'productos necesitan atención',
+      icon: AlertTriangle,
+      color: 'text-amber-700',
+      bg: 'bg-amber-50',
+      accent: 'bg-amber-500',
     },
   ];
 
@@ -116,14 +100,14 @@ export function DashboardTab() {
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {kpis.map((kpi) => (
           <div key={kpi.label} className="bg-white rounded-2xl p-5 card-shadow">
             <div className="flex items-center justify-between mb-3">
               <div className={`w-10 h-10 rounded-xl ${kpi.bg} flex items-center justify-center`}>
-                <kpi.icon className={`w-5 h-5 ${kpi.color.replace('bg-', 'text-')}`} />
+                <kpi.icon className={`w-5 h-5 ${kpi.color}`} />
               </div>
-              <ArrowUpRight className="w-4 h-4 text-secondary-300" />
+              <span className={`h-1.5 w-10 rounded-full ${kpi.accent}`} />
             </div>
             <p className="text-2xl font-bold text-secondary-900">{kpi.value}</p>
             <p className="text-sm text-secondary-500 mt-1">{kpi.label}</p>

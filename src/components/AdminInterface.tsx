@@ -6,18 +6,41 @@ import { UsersTab } from './admin/UsersTab';
 import { QuotesTab } from './admin/QuotesTab';
 import { SalesTab } from './admin/SalesTab';
 import {
-  LayoutDashboard, Package, Users, FileText, Receipt,
-  Menu, X, LogOut,
+  BarChart3,
+  Bird,
+  BookOpen,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Package,
+  ShoppingCart,
+  UsersRound,
+  X,
 } from 'lucide-react';
 import type { AdminTab } from '../types';
 
-const NAV_ITEMS: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'sales', label: 'Ventas', icon: Receipt },
-  { id: 'catalog', label: 'Catálogo de Productos', icon: Package },
-  { id: 'users', label: 'Usuarios y Roles', icon: Users },
-  { id: 'quotes', label: 'Cotizaciones y Faltantes', icon: FileText },
+const NAV_ITEMS: { id: AdminTab; label: string; description: string; icon: typeof LayoutDashboard }[] = [
+  { id: 'dashboard', label: 'Dashboard', description: 'Resumen general', icon: LayoutDashboard },
+  { id: 'catalog', label: 'Inventario', description: 'Productos y stock', icon: Package },
+  { id: 'sales', label: 'Ventas / POS', description: 'Operaciones de venta', icon: ShoppingCart },
+  { id: 'users', label: 'Clientes', description: 'Personas y cuentas', icon: UsersRound },
+  { id: 'quotes', label: 'Reportes', description: 'Cotizaciones y análisis', icon: BarChart3 },
 ];
+
+function BrandMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`flex items-center ${compact ? 'gap-2.5' : 'gap-3'}`}>
+      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-primary-700 shadow-lg shadow-primary-950/20">
+        <BookOpen className="h-5 w-5 text-white" strokeWidth={1.8} />
+        <Bird className="absolute -right-1 -top-1 h-4 w-4 fill-white text-white" strokeWidth={1.6} />
+      </div>
+      <div>
+        <p className="font-heading text-lg font-bold leading-none tracking-wide text-white">ANDITSA</p>
+        <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.24em] text-sky-300">Librería</p>
+      </div>
+    </div>
+  );
+}
 
 export function AdminInterface() {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -26,150 +49,123 @@ export function AdminInterface() {
 
   const userInitials = (authUser?.name ?? 'A')
     .split(' ')
-    .map((w) => w[0])
+    .map((word) => word[0])
     .slice(0, 2)
     .join('')
     .toUpperCase();
   const roleLabel = authUser?.role === 'admin' ? 'Administrador' : 'Trabajador';
+  const currentItem = NAV_ITEMS.find((item) => item.id === activeTab) ?? NAV_ITEMS[0];
 
-  const currentLabel = NAV_ITEMS.find((n) => n.id === activeTab)?.label ?? '';
+  const renderNavigation = (mobile = false) => (
+    <nav className="space-y-1.5">
+      {NAV_ITEMS.map((item) => {
+        const isActive = activeTab === item.id;
+        return (
+          <button
+            key={item.id}
+            onClick={() => {
+              setActiveTab(item.id);
+              if (mobile) setSidebarOpen(false);
+            }}
+            className={`group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-all duration-200 ${
+              isActive
+                ? 'bg-gradient-to-r from-sky-400/20 to-primary-600/20 text-white ring-1 ring-sky-300/20'
+                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+            }`}
+          >
+            <span className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${isActive ? 'bg-sky-400 text-primary-950' : 'bg-white/5 text-slate-400 group-hover:text-sky-300'}`}>
+              <item.icon className="h-[18px] w-[18px]" />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">{item.label}</span>
+              <span className={`mt-0.5 block text-[11px] ${isActive ? 'text-sky-200/80' : 'text-slate-500'}`}>{item.description}</span>
+            </span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+
+  const renderAccount = () => (
+    <div className="border-t border-white/10 pt-4">
+      <div className="mb-3 flex items-center gap-3 rounded-xl bg-white/5 p-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sm font-bold text-primary-700">
+          {userInitials}
+        </div>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium text-white">{authUser?.name ?? 'Usuario'}</p>
+          <p className="text-xs text-slate-400">{roleLabel}</p>
+        </div>
+      </div>
+      <button
+        onClick={() => setAppRole('mobile')}
+        className="mb-1 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-white/5 hover:text-white"
+      >
+        <LayoutDashboard className="h-4 w-4" /> Vista móvil
+      </button>
+      <button
+        onClick={logout}
+        className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+      >
+        <LogOut className="h-4 w-4" /> Cerrar sesión
+      </button>
+    </div>
+  );
 
   return (
-    <div className="flex h-screen bg-secondary-50">
-      {/* Sidebar - desktop */}
-      <aside className="hidden lg:flex w-64 bg-secondary-900 flex-col flex-shrink-0">
-        <div className="px-6 py-5 flex items-center gap-2.5 border-b border-secondary-800">
-          <div className="w-9 h-9 rounded-lg bg-accent-500 flex items-center justify-center">
-            <span className="text-white font-bold">A</span>
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm">Librería Anditsa</p>
-            <p className="text-secondary-400 text-[10px]">Panel Administrativo</p>
-          </div>
+    <div className="flex h-screen overflow-hidden bg-slate-50">
+      <aside className="hidden w-72 shrink-0 flex-col bg-gradient-to-b from-primary-950 via-primary-900 to-primary-800 px-4 py-5 lg:flex">
+        <div className="border-b border-white/10 px-3 pb-6">
+          <BrandMark />
+          <p className="mt-5 max-w-[190px] text-xs leading-5 text-slate-400">Gestión simple para una librería que inspira.</p>
         </div>
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-primary-600 text-white'
-                    : 'text-secondary-400 hover:bg-secondary-800 hover:text-white'
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-        <div className="px-3 py-4 border-t border-secondary-800">
-          <div className="flex items-center gap-3 px-3 py-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-              <span className="text-primary-700 font-semibold text-sm">{userInitials}</span>
-            </div>
-            <div className="min-w-0">
-              <p className="text-white text-sm font-medium truncate">{authUser?.name ?? 'Usuario'}</p>
-              <p className="text-secondary-400 text-xs">{roleLabel}</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setAppRole('mobile')}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-secondary-400 hover:bg-secondary-800 hover:text-white transition-all mb-1"
-          >
-            <LogOut className="w-5 h-5" /> Cambiar a vista móvil
-          </button>
-          <button
-            onClick={logout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-danger-400 hover:bg-danger-950/30 hover:text-danger-400 transition-all"
-          >
-            <LogOut className="w-5 h-5" /> Cerrar sesión
-          </button>
-        </div>
+        <div className="flex-1 px-1 py-6">{renderNavigation()}</div>
+        {renderAccount()}
       </aside>
 
-      {/* Sidebar - mobile drawer */}
       {sidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-40">
-          <div className="absolute inset-0 bg-secondary-900/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-          <aside className="absolute left-0 top-0 bottom-0 w-64 bg-secondary-900 flex flex-col animate-slide-in-right">
-            <div className="px-6 py-5 flex items-center justify-between border-b border-secondary-800">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-accent-500 flex items-center justify-center">
-                  <span className="text-white font-bold">A</span>
-                </div>
-                <div>
-                  <p className="text-white font-bold text-sm">Librería Anditsa</p>
-                  <p className="text-secondary-400 text-[10px]">Panel Admin</p>
-                </div>
-              </div>
-              <button onClick={() => setSidebarOpen(false)} className="text-secondary-400">
-                <X className="w-5 h-5" />
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <button aria-label="Cerrar menú" className="absolute inset-0 bg-primary-950/60 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+          <aside className="relative flex h-full w-[min(86vw,18rem)] flex-col bg-gradient-to-b from-primary-950 via-primary-900 to-primary-800 px-4 py-5 shadow-2xl animate-slide-in-right">
+            <div className="flex items-center justify-between border-b border-white/10 px-2 pb-5">
+              <BrandMark compact />
+              <button onClick={() => setSidebarOpen(false)} className="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white" aria-label="Cerrar menú">
+                <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="flex-1 px-3 py-4 space-y-1">
-              {NAV_ITEMS.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => { setActiveTab(item.id); setSidebarOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === item.id ? 'bg-primary-600 text-white' : 'text-secondary-400 hover:bg-secondary-800'
-                  }`}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-            <div className="px-3 py-4 border-t border-secondary-800">
-              <button
-                onClick={() => setAppRole('mobile')}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-secondary-400 hover:bg-secondary-800 hover:text-white transition-all mb-1"
-              >
-                <LogOut className="w-5 h-5" /> Vista móvil
-              </button>
-              <button
-                onClick={logout}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-danger-400 hover:bg-danger-950/30 transition-all"
-              >
-                <LogOut className="w-5 h-5" /> Cerrar sesión
-              </button>
-            </div>
+            <div className="flex-1 px-1 py-6">{renderNavigation(true)}</div>
+            {renderAccount()}
           </aside>
         </div>
       )}
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top bar */}
-        <header className="bg-white border-b border-secondary-100 px-4 lg:px-6 py-3 flex items-center justify-between flex-shrink-0">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3.5 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-secondary-600">
-              <Menu className="w-6 h-6" />
+            <button onClick={() => setSidebarOpen(true)} className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden" aria-label="Abrir menú">
+              <Menu className="h-5 w-5" />
             </button>
-            <h1 className="text-lg font-semibold text-secondary-900">{currentLabel}</h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 text-sm text-secondary-500">
-              <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-                <span className="text-primary-700 font-semibold text-sm">{userInitials}</span>
-              </div>
-              <span className="font-medium text-secondary-700">{authUser?.name ?? 'Usuario'}</span>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.16em] text-sky-600">ANDITSA Librería</p>
+              <h1 className="mt-1 text-xl font-bold text-slate-900">{currentItem.label}</h1>
             </div>
+          </div>
+          <div className="hidden items-center gap-3 sm:flex">
+            <div className="text-right">
+              <p className="text-sm font-semibold text-slate-800">{authUser?.name ?? 'Usuario'}</p>
+              <p className="text-xs text-slate-400">{roleLabel}</p>
+            </div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100 text-sm font-bold text-primary-700">{userInitials}</div>
           </div>
         </header>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto scrollbar-thin p-4 lg:p-6">
+        <main className="flex-1 overflow-y-auto scrollbar-thin bg-slate-50 p-4 sm:p-6 lg:p-8">
           {activeTab === 'dashboard' && <DashboardTab />}
           {activeTab === 'sales' && <SalesTab />}
           {activeTab === 'catalog' && <CatalogTab />}
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'quotes' && <QuotesTab />}
-        </div>
+        </main>
       </div>
     </div>
   );

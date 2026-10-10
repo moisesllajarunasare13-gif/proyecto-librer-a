@@ -88,7 +88,7 @@ export function HomeScreen({ onEnterModule }: HomeScreenProps) {
             <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center">
               <span className="text-white font-bold text-sm">P</span>
             </div>
-            <p className="text-sm font-bold text-secondary-900">Librería Anditsa</p>
+            <p className="text-sm font-bold text-secondary-900">ANDITSA Librería</p>
           </div>
           <button
             onClick={logout}
@@ -168,7 +168,7 @@ export function HomeScreen({ onEnterModule }: HomeScreenProps) {
       <div className="px-5 pb-4 pt-2">
         <div className="flex items-center justify-center gap-1.5 text-xs text-secondary-300">
           <CategoryIcon id="escolar" className="w-3.5 h-3.5" />
-          <span>Librería Anditsa © 2026</span>
+          <span>ANDITSA Librería © 2026</span>
         </div>
       </div>
     </div>

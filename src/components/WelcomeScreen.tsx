@@ -41,7 +41,7 @@ export function WelcomeScreen({ onFinish, duration = 5000 }: WelcomeScreenProps)
 
       {/* App name */}
       <h1 className="font-heading text-4xl font-bold text-white mt-6 animate-fade-in tracking-tight text-center">
-        Librería Anditsa
+        ANDITSA Librería
       </h1>
       <p className="text-sm text-accent-300 mt-2 animate-fade-in tracking-wide">
         Tu librería de confianza
@@ -67,7 +67,7 @@ export function WelcomeScreen({ onFinish, duration = 5000 }: WelcomeScreenProps)
 
       {/* Footer */}
       <p className="absolute bottom-6 text-xs text-white/30">
-        Librería Anditsa © 2026
+        ANDITSA Librería © 2026
       </p>
 
       <style>{`

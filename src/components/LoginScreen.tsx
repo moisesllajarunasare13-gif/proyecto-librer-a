@@ -20,7 +20,7 @@ export function LoginScreen() {
       const ok = login(email, password);
       setLoading(false);
       if (ok) {
-        showToast('Bienvenido a Librería Anditsa', 'success');
+        showToast('Bienvenido a ANDITSA Librería', 'success');
       } else {
         showToast('Email o contraseña incorrectos', 'error');
       }
@@ -35,7 +35,7 @@ export function LoginScreen() {
           <div className="w-16 h-16 rounded-2xl bg-accent-500/10 backdrop-blur-md flex items-center justify-center mx-auto mb-4 ring-1 ring-accent-500/30">
             <BookOpen className="w-8 h-8 text-accent-400" />
           </div>
-          <h1 className="font-heading text-2xl font-bold text-white tracking-tight">Librería Anditsa</h1>
+          <h1 className="font-heading text-2xl font-bold text-white tracking-tight">ANDITSA Librería</h1>
           <p className="text-sm text-accent-300 mt-1">Tu librería de confianza</p>
         </div>
 
@@ -104,7 +104,7 @@ export function LoginScreen() {
         </div>
 
         <p className="text-center text-xs text-accent-300/70 mt-6">
-          Librería Anditsa © 2026 — Sistema de gestión integral
+          ANDITSA Librería © 2026 — Sistema de gestión integral
         </p>
       </div>
     </div>
