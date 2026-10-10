@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BookOpen } from 'lucide-react';
+import { Logo } from './Logo';
 
 interface WelcomeScreenProps {
   onFinish: () => void;
@@ -33,16 +33,9 @@ export function WelcomeScreen({ onFinish, duration = 5000 }: WelcomeScreenProps)
 
       {/* Logo */}
       <div className="relative animate-scale-in">
-        <div className="w-24 h-24 rounded-3xl bg-accent-500/10 backdrop-blur-md flex items-center justify-center ring-1 ring-accent-500/30 shadow-2xl">
-          <BookOpen className="w-12 h-12 text-accent-400" />
-        </div>
-        <div className="absolute -inset-2 rounded-3xl ring-1 ring-accent-500/10" />
+        <Logo className="w-72 shadow-2xl" imageClassName="max-h-36" />
+        <div className="absolute -inset-2 rounded-3xl ring-1 ring-primary-300/20" />
       </div>
-
-      {/* App name */}
-      <h1 className="font-heading text-4xl font-bold text-white mt-6 animate-fade-in tracking-tight text-center">
-        ANDITSA Librería
-      </h1>
       <p className="text-sm text-accent-300 mt-2 animate-fade-in tracking-wide">
         Tu librería de confianza
       </p>

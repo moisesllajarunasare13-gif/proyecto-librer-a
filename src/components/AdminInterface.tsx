@@ -7,8 +7,6 @@ import { QuotesTab } from './admin/QuotesTab';
 import { SalesTab } from './admin/SalesTab';
 import {
   BarChart3,
-  Bird,
-  BookOpen,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -18,6 +16,7 @@ import {
   X,
 } from 'lucide-react';
 import type { AdminTab } from '../types';
+import { Logo } from './Logo';
 
 const NAV_ITEMS: { id: AdminTab; label: string; description: string; icon: typeof LayoutDashboard }[] = [
   { id: 'dashboard', label: 'Dashboard', description: 'Resumen general', icon: LayoutDashboard },
@@ -28,18 +27,7 @@ const NAV_ITEMS: { id: AdminTab; label: string; description: string; icon: typeo
 ];
 
 function BrandMark({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={`flex items-center ${compact ? 'gap-2.5' : 'gap-3'}`}>
-      <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-primary-700 shadow-lg shadow-primary-950/20">
-        <BookOpen className="h-5 w-5 text-white" strokeWidth={1.8} />
-        <Bird className="absolute -right-1 -top-1 h-4 w-4 fill-white text-white" strokeWidth={1.6} />
-      </div>
-      <div>
-        <p className="font-heading text-lg font-bold leading-none tracking-wide text-white">ANDITSA</p>
-        <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.24em] text-sky-300">Librería</p>
-      </div>
-    </div>
-  );
+  return <Logo className={compact ? 'w-40' : 'w-48'} imageClassName="max-h-16" />;
 }
 
 export function AdminInterface() {
@@ -145,9 +133,12 @@ export function AdminInterface() {
             <button onClick={() => setSidebarOpen(true)} className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden" aria-label="Abrir menú">
               <Menu className="h-5 w-5" />
             </button>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.16em] text-sky-600">ANDITSA Librería</p>
-              <h1 className="mt-1 text-xl font-bold text-slate-900">{currentItem.label}</h1>
+            <div className="flex items-center gap-3">
+              <Logo className="hidden w-32 p-1 sm:block" imageClassName="max-h-7" />
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.16em] text-primary-500">Panel de gestión</p>
+                <h1 className="mt-1 text-xl font-bold text-slate-900">{currentItem.label}</h1>
+              </div>
             </div>
           </div>
           <div className="hidden items-center gap-3 sm:flex">

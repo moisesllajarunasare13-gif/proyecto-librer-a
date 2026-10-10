@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Eye, EyeOff, Lock, Mail, LogIn, BookOpen } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, LogIn } from 'lucide-react';
+import { Logo } from './Logo';
 
 export function LoginScreen() {
   const { login, showToast } = useApp();
@@ -32,11 +33,8 @@ export function LoginScreen() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8 animate-fade-in">
-          <div className="w-16 h-16 rounded-2xl bg-accent-500/10 backdrop-blur-md flex items-center justify-center mx-auto mb-4 ring-1 ring-accent-500/30">
-            <BookOpen className="w-8 h-8 text-accent-400" />
-          </div>
-          <h1 className="font-heading text-2xl font-bold text-white tracking-tight">ANDITSA Librería</h1>
-          <p className="text-sm text-accent-300 mt-1">Tu librería de confianza</p>
+          <Logo className="mx-auto w-56" imageClassName="max-h-24" />
+          <p className="text-sm text-primary-200 mt-3">Tu librería de confianza</p>
         </div>
 
         {/* Login card */}

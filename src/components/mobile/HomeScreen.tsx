@@ -1,5 +1,6 @@
 import { useApp } from '../../context/AppContext';
 import { CategoryIcon } from '../CategoryIcon';
+import { Logo } from '../Logo';
 import {
   ScanLine, ShoppingCart, ClipboardList, Palette,
   ArrowLeft, LogOut, TrendingUp, Clock, Wrench,
@@ -84,12 +85,7 @@ export function HomeScreen({ onEnterModule }: HomeScreenProps) {
       {/* Header with greeting */}
       <div className="bg-white px-5 pt-8 pb-6 rounded-b-3xl card-shadow-sm">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">P</span>
-            </div>
-            <p className="text-sm font-bold text-secondary-900">ANDITSA Librería</p>
-          </div>
+          <Logo className="w-32 p-1" imageClassName="max-h-8" />
           <button
             onClick={logout}
             className="w-9 h-9 rounded-xl text-secondary-400 hover:text-danger-600 hover:bg-danger-50 flex items-center justify-center transition-colors"
