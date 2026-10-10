@@ -39,11 +39,11 @@ export function AdminInterface() {
       {/* Sidebar - desktop */}
       <aside className="hidden lg:flex w-64 bg-secondary-900 flex-col flex-shrink-0">
         <div className="px-6 py-5 flex items-center gap-2.5 border-b border-secondary-800">
-          <div className="w-9 h-9 rounded-lg bg-primary-600 flex items-center justify-center">
-            <span className="text-white font-bold">P</span>
+          <div className="w-9 h-9 rounded-lg bg-accent-500 flex items-center justify-center">
+            <span className="text-white font-bold">A</span>
           </div>
           <div>
-            <p className="text-white font-bold text-sm">PapeleraApp</p>
+            <p className="text-white font-bold text-sm">Librería Anditsa</p>
             <p className="text-secondary-400 text-[10px]">Panel Administrativo</p>
           </div>
         </div>
@@ -98,11 +98,11 @@ export function AdminInterface() {
           <aside className="absolute left-0 top-0 bottom-0 w-64 bg-secondary-900 flex flex-col animate-slide-in-right">
             <div className="px-6 py-5 flex items-center justify-between border-b border-secondary-800">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-primary-600 flex items-center justify-center">
-                  <span className="text-white font-bold">P</span>
+                <div className="w-9 h-9 rounded-lg bg-accent-500 flex items-center justify-center">
+                  <span className="text-white font-bold">A</span>
                 </div>
                 <div>
-                  <p className="text-white font-bold text-sm">PapeleraApp</p>
+                  <p className="text-white font-bold text-sm">Librería Anditsa</p>
                   <p className="text-secondary-400 text-[10px]">Panel Admin</p>
                 </div>
               </div>
