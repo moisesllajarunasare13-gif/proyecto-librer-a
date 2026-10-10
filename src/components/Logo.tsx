@@ -5,11 +5,11 @@ interface LogoProps {
 
 export function Logo({ className = '', imageClassName = '' }: LogoProps) {
   return (
-    <div className={`rounded-xl bg-white px-3 py-2 shadow-sm ${className}`}>
+    <div className={className}>
       <img
-        src="/anditsa-logo.png"
+        src="/anditsa-logo-transparent.png"
         alt="ANDITSA Librería"
-        className={`h-auto w-full object-contain ${imageClassName}`}
+        className={`h-auto w-full object-contain drop-shadow-[0_8px_18px_rgba(56,136,232,0.22)] ${imageClassName}`}
       />
     </div>
   );
